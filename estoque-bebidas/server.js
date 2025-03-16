@@ -1,5 +1,5 @@
 import express from "express";
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 
@@ -153,6 +153,6 @@ app.get("/estoque-baixo", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`app esta rodando na porta ${port}`);
+app.listen(PORT, () => {
+  console.log(`app esta rodando na porta ${PORT}`);
 });
