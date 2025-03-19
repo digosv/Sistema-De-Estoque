@@ -65,3 +65,7 @@ main.table {
 .table_body::-webkit-scrollbar-thumb {
   background-color: #0004;
 }
+
+img {
+  cursor: pointer;
+}

@@ -4,9 +4,8 @@ import { useRef } from "react";
 import api from "../../services/api.js";
 import { Modal } from "../Components/Modal.jsx";
 import { useState } from "react";
-import { useEffect } from "react";
 
-function Navbar() {
+function Navbar({ onBebidaAdded }) {
   const [modelOpen, setModelOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -17,6 +16,7 @@ function Navbar() {
     try {
       await addBebida();
       handleButtonClick();
+      onBebidaAdded();
       alert("bebida adicionada com sucesso!");
     } catch (error) {
       alert("Alguma informação incorreta ou faltando. ", error);

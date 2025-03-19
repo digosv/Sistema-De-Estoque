@@ -5,17 +5,22 @@ import trash from "../../assets/trash.svg";
 import plus from "../../assets/plus.svg";
 import edit from "../../assets/edit.svg";
 
-function Table() {
+function Table({ refreshTrigger }) {
   const [bebidas, setBebidas] = useState([]);
 
   useEffect(() => {
     getBebidas();
-  }, []);
+  }, [refreshTrigger]);
 
   async function getBebidas() {
     const bebidasFromApi = await api.get("/bebidas");
 
     setBebidas(bebidasFromApi.data);
+  }
+
+  async function deleteBebida(id) {
+    await api.delete(`/bebidas/${id}`);
+    getBebidas();
   }
 
   return (
@@ -37,16 +42,22 @@ function Table() {
               </tr>
             </thead>
             {bebidas.map((bebida) => (
-              <tbody>
+              <tbody key={bebida.id}>
                 <tr>
                   <td>{bebida.id}</td>
                   <td>{bebida.name}</td>
                   <td>{bebida.category}</td>
                   <td>{bebida.quantity}</td>
                   <td>{bebida.createdAt}</td>
-                  <img src={trash} alt="" />
-                  <img src={edit} alt="" />
-                  <img src={plus} alt="" />
+                  <td>
+                    <img
+                      onClick={() => deleteBebida(bebida.id)}
+                      src={trash}
+                      alt=""
+                    />
+                    <img src={edit} alt="" />
+                    <img src={plus} alt="" />
+                  </td>
                 </tr>
               </tbody>
             ))}

@@ -11,7 +11,12 @@ export const getBebidas = async (req, res) => {
 
 export const createBebida = async (req, res) => {
   try {
-    const novaBebida = await bebidaService.adicionarBebida(req.body);
+    const bebidaData = {
+      name: req.body.name,
+      category: req.body.category,
+      quantity: Number(req.body.quantity),
+    };
+    const novaBebida = await bebidaService.adicionarBebida(bebidaData);
     res.status(201).json(novaBebida);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -20,9 +25,14 @@ export const createBebida = async (req, res) => {
 
 export const updateBebida = async (req, res) => {
   try {
+    const bebidaData ={ 
+      name: req.body.name,
+      category: req.body.category,
+      quantity: Number(req.body.quantity)
+    }
     const bebidaAtualizada = await bebidaService.editarBebida(
       req.params.id,
-      req.body
+      bebidaData
     );
     res.status(200).json(bebidaAtualizada);
   } catch (error) {
