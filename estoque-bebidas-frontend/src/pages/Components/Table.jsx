@@ -28,6 +28,7 @@ function Table() {
           <table>
             <thead>
               <tr className="trfix">
+                <th>id</th>
                 <th>Nome</th>
                 <th>Categoria</th>
                 <th>Quantidade</th>
@@ -38,6 +39,7 @@ function Table() {
             {bebidas.map((bebida) => (
               <tbody>
                 <tr>
+                  <td>{bebida.id}</td>
                   <td>{bebida.name}</td>
                   <td>{bebida.category}</td>
                   <td>{bebida.quantity}</td>
