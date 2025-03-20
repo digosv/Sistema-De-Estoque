@@ -1,20 +1,26 @@
 import Navbar from "../Components/Navbar";
 import Table from "../Components/Table";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
+import api from "../../services/api.js";
 
 function App() {
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [bebidas, setBebidas] = useState([]);
 
-  const handleRefresh = () => {
-    setRefreshTrigger(prev => prev + 1);
-  };
+  async function getBebidas() {
+    const response = await api.get("/bebidas");
+    setBebidas(response.data);
+  }
+
+  useEffect(() => {
+    getBebidas();
+  }, []);
 
   return (
     <>
       <div className="container">
-        <Navbar onBebidaAdded={handleRefresh} />
-        <Table refreshTrigger={refreshTrigger} />
+        <Navbar getBebidas={getBebidas} />
+        <Table bebidas={bebidas} getBebidas={getBebidas} />
       </div>
     </>
   );

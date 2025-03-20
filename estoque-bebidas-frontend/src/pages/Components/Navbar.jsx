@@ -5,7 +5,9 @@ import api from "../../services/api.js";
 import { Modal } from "../Components/Modal.jsx";
 import { useState } from "react";
 
-function Navbar({ onBebidaAdded }) {
+import table from "./Table.jsx";
+
+function Navbar({ getBebidas }) {
   const [modelOpen, setModelOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -15,8 +17,8 @@ function Navbar({ onBebidaAdded }) {
   async function handleSubmite() {
     try {
       await addBebida();
+      getBebidas();
       handleButtonClick();
-      onBebidaAdded();
       alert("bebida adicionada com sucesso!");
     } catch (error) {
       alert("Alguma informação incorreta ou faltando. ", error);

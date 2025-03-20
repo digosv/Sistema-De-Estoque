@@ -4,22 +4,31 @@ import { useState, useEffect } from "react";
 import trash from "../../assets/trash.svg";
 import plus from "../../assets/plus.svg";
 import edit from "../../assets/edit.svg";
+import minus from "../../assets/minus.png";
 
-function Table({ refreshTrigger }) {
-  const [bebidas, setBebidas] = useState([]);
+function Table({ bebidas, getBebidas }) {
+  async function deleteBebida(id) {
+    const isConfirmed = window.confirm(
+      "Tem certeza que deseja excluir esta bebida?"
+    );
 
-  useEffect(() => {
-    getBebidas();
-  }, [refreshTrigger]);
-
-  async function getBebidas() {
-    const bebidasFromApi = await api.get("/bebidas");
-
-    setBebidas(bebidasFromApi.data);
+    if (isConfirmed) {
+      await api.delete(`/bebidas/${id}`);
+      getBebidas();
+    }
   }
 
-  async function deleteBebida(id) {
-    await api.delete(`/bebidas/${id}`);
+  async function addBebida(id, quantityBebida) {
+    await api.put(`/bebidas/${id}`, {
+      quantity: quantityBebida + 1,
+    });
+    getBebidas();
+  }
+
+  async function removeBebida(id, quantityBebida) {
+    await api.put(`/bebidas/${id}`, {
+      quantity: quantityBebida - 1,
+    });
     getBebidas();
   }
 
@@ -42,22 +51,29 @@ function Table({ refreshTrigger }) {
               </tr>
             </thead>
             {bebidas.map((bebida) => (
-              <tbody key={bebida.id}>
+              <tbody>
                 <tr>
                   <td>{bebida.id}</td>
                   <td>{bebida.name}</td>
                   <td>{bebida.category}</td>
                   <td>{bebida.quantity}</td>
                   <td>{bebida.createdAt}</td>
-                  <td>
-                    <img
-                      onClick={() => deleteBebida(bebida.id)}
-                      src={trash}
-                      alt=""
-                    />
-                    <img src={edit} alt="" />
-                    <img src={plus} alt="" />
-                  </td>
+                  <img
+                    onClick={() => deleteBebida(bebida.id)}
+                    src={trash}
+                    alt=""
+                  />
+                  <img src={edit} alt="" />
+                  <img
+                    onClick={() => addBebida(bebida.id, bebida.quantity)}
+                    src={plus}
+                    alt=""
+                  />
+                  <img
+                    src={minus}
+                    onClick={() => removeBebida(bebida.id, bebida.quantity)}
+                    alt=""
+                  />
                 </tr>
               </tbody>
             ))}
